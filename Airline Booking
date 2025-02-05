@@ -90,3 +90,1191 @@ for (int i = 0; i < flightNumber; i++) {
             }
         }
       }
+
+
+int menu_choice;
+    do {
+        printf("Welcome to the maxtrix airline system\n\n");
+        printf("Select (1) for Customer\n");
+        printf("Select (2) for Employee\n");
+        printf("Select (3) to Quit the Program\n");
+        scanf(" %d", &menu_choice);
+        
+        switch (menu_choice) {
+            case 1: {
+                int choice;
+                do {
+                    printf("\nWelcome Customer!\n");
+                    printf("Select one of the options below\n\n");
+                    printf("**Please don't try to modify or book a reservation if there are none in the system**\n");
+                    printf("Thanks for your understanding!\n\n");
+                    printf("1. Book a flight\n");
+                    printf("2. Modify a reservation\n");
+                    printf("3. Cancel a reservation\n");
+                    printf("4. Return to main menu\n");
+                    printf("Enter your choice: ");
+                    scanf(" %d", &choice);
+                    
+                    switch (choice) {
+                        case 1:
+                            book_reservation(&(*flights), &seat_number, &flightNumber, &destination_choice, &counter);
+                            break;
+                        case 2:
+                            if (counter > 0){
+                            modify_reservation(&(*flights), &seat_number, &flight_of_reservation, &flightNumber, &new_seat_selection, &counter);
+                            break;
+                            }
+                            else{
+                            printf("There are no reservations to modify");
+                            break;
+                            }
+                        case 3:
+                            if (counter > 0){
+                            delete_reservation(&(*flights), &seat_number, &flight_to_delete, &flightNumber, &counter);
+                            break;
+                            }
+                            else{
+                            printf("There are no reservations to modify");
+                            break;
+                            }
+                        case 4:
+                            printf("\nReturning to main menu...\n");
+                            break;
+                        default:
+                            printf("\nInvalid input. Please try again.\n");
+                    }
+                } while (choice != 4);
+                break;
+            }
+            case 2: {
+                int choice;
+                do {
+                    printf("\nEmployee menu:\n");
+                    printf("1. Add a Route\n");
+                    printf("2. Delete a Route\n");
+                    printf("3. Add a Destination\n");
+                    printf("4. Remove a Destination\n");
+                    printf("5. Add Plane\n");
+                    printf("6. Delete Plane\n");
+                    printf("7. Manage/check staffing for flights\n");
+                    printf("8. Return to main menu\n");
+                    printf("Enter your choice: ");
+                    scanf(" %d", &choice);
+                    
+                    switch (choice) {
+                        case 1:
+                            add_route(&(*flights), &new_route_destination, &flightNumber);
+                            break;
+                        case 2:
+                            delete_route(&(*flights), &remove_route, &flightNumber);
+                            break;
+                        case 3:
+                            add_destination(&(*flights), &newest_destination, replace_destination, &flightNumber);
+                            break;
+                        case 4:
+                            delete_destination(&(*flights), &remove_destination, &flightNumber);
+                            break;
+                        case 5:
+                            add_plane(&(*flights), &new_plane, &old_plane, &flightNumber);
+                            break;
+                        case 6:
+                            delete_plane(&(*flights), &plane_to_delete, &flightNumber);
+                            break;
+                        case 7:
+                            manage_staff(&(*flights), &flightNumber, &flight_to_edit);
+                            break;
+                        case 8:
+                            printf("\nReturning to main menu...\n");
+                            break;
+                        default:
+                            printf("\nInvalid input. Please try again.\n");
+                    }
+                } while (choice != 8);
+                break;
+            }
+            
+            case 3:
+                printf("\nThanks for using the Matrix Airline system. Please visit again!!\n");
+                
+            break;
+            
+            default:
+                printf("\nInvalid input. Please try again.\n");
+                
+            break;
+        }
+        
+    } while (menu_choice != 3);
+    
+    return 0;
+}
+
+void book_reservation(FLIGHT *flights, int *seat_number, int *flightNumber, int *destination_choice, int *counter){
+    
+    int i;
+    int j;
+    int book_choice;
+    
+
+    do{
+
+        printf("\nPlease select one of the options below\n\n");
+        printf("1. Search our available flights\n");
+        printf("2. Search our available seats\n");
+        printf("3. Book a reservation\n");
+        printf("4. Return to main menu\n");
+        scanf("%d", &book_choice);
+        
+        switch (book_choice){
+            
+
+        case 1: 
+            printf("\nFlight Information:\n");
+                for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d || Pilot ID: %d || Route: %c to %c \n", flights[i].flightNumber, flights[i].plane, flights[i].pilot_id, flights[i].route.departure, flights[i].route.destination);
+
+        }
+        
+            printf("Departure Codes:\n");
+            printf("S = San Antonio\n");  
+        
+            printf("Destination Codes:\n");
+            printf("A = New York\n");
+            printf("B = Chicago\n");
+            printf("C = Los Angeles\n");
+            printf("D = Miami\n");
+            printf("E = Dallas\n"); //add route function
+            printf("F = San Diego\n"); //add route function
+            printf("M = Denver\n"); //add destination function
+            printf("N = Seattle\n"); //add destination function
+            printf("O = Houston\n"); //add destination function
+            
+            
+            
+        
+        
+        break;
+                
+        case 2:
+        
+            for (int i = 0; i < *flightNumber; i++) {
+                for (int j = 0; j < 50; j++) {
+                    flights[i].seats[j].seat_number = j;
+                    if (i == 0) {
+                    flights[i].seats[j].ticket_number = j+1;
+                    }
+                    else if (i == 1) {
+                    flights[i].seats[j].ticket_number = 51 + j;
+                    }
+                    else if (i == 2) {
+                    flights[i].seats[j].ticket_number = 101 + j;
+                    }
+                    else if (i == 3) {
+                    flights[i].seats[j].ticket_number = 151 + j;
+                    }
+                    else if (i == 4) {
+                    flights[i].seats[j].ticket_number = 201 + j;
+                    }
+                    else if (i == 5) {
+                    flights[i].seats[j].ticket_number = 251 + j;
+                    }
+            }
+            }
+            
+            for (int i = 0; i < *flightNumber; i++) {
+                for (int j = 0; j < 50; j++) {
+                    if (flights[i].seats[j].reserved==1){
+                    flights[i].seats[j].reserved=1;  
+                    }
+                    else if (flights[i].seats[j].reserved==0){
+                    flights[i].seats[j].reserved=0;  
+                    }
+                }}
+        
+        
+            
+            printf("\nFlight Information:\n");
+                for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d: || Plane: %d || Pilot ID: %d || Route: %c to %c \n", flights[i].flightNumber, flights[i].plane, flights[i].pilot_id, flights[i].route.departure, flights[i].route.destination);
+                    printf("Seats:\n");
+                    for (j = 0; j < 50; j++) {
+                        printf(" Seat %d || Ticket Number: %d || Booking Status: %d\n",
+                               flights[i].seats[j].seat_number,
+                               flights[i].seats[j].ticket_number,
+                               flights[i].seats[j].reserved);
+                    }
+                }
+                
+                break;
+                
+        case 3:
+
+              for (int i = 0; i < *flightNumber; i++) {
+                    for (int j = 0; j < 50; j++) {
+                    flights[i].seats[j].seat_number = j;
+                        if (i == 0) {
+                    flights[i].seats[j].ticket_number = j+1;
+                    }
+                        else if (i == 1) {
+                    flights[i].seats[j].ticket_number = 51 + j;
+                    }
+                        else if (i == 2) {
+                flights[i].seats[j].ticket_number = 101 + j;
+                    }
+                    else if (i == 3) {
+                flights[i].seats[j].ticket_number = 151 + j;
+                    }
+                    else if (i == 4) {
+                flights[i].seats[j].ticket_number = 201 + j;
+                    }
+                    else if (i == 5) {
+                flights[i].seats[j].ticket_number = 251 + j;
+                    }
+        
+                }
+            }
+           
+            printf("\nPlease select a destination from the list below (Please only select the listed options and please use the flight #):\n");
+            
+            if (*flightNumber==3){
+            do{
+            for (i=0; i<*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", destination_choice); 
+            if (*destination_choice > 3 || *destination_choice < 0){
+            printf("Please enter a valid input\n");
+            } 
+            }while (*destination_choice < 0 || *destination_choice > 3);
+            }
+            
+            if (*flightNumber==4) {
+            do{
+            for (i=0; i<*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", destination_choice); 
+            if (*destination_choice > 4 || *destination_choice < 0){
+            printf("Please enter a valid input \n");
+            }
+            }while (*destination_choice < 0 || *destination_choice > 4);
+            }
+            
+            if (*flightNumber==5){
+            do{
+            for (i=0; i<*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", destination_choice); 
+            if (*destination_choice > 5 || *destination_choice < 0){
+            printf("Please enter a valid input\n");
+            }
+            }while (*destination_choice < 0 || *destination_choice > 5);
+            }
+            
+            if (*flightNumber==6){
+            do{
+            for (i=0; i<*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+             scanf("%d", destination_choice); 
+            if (*destination_choice > 6 || *destination_choice < 0){
+            printf("Please enter a valid input\n");
+            }
+            }while (*destination_choice < 0 || *destination_choice > 6);
+            }
+            
+           
+
+            do {
+            printf("\nPlease select a seat (0-49)\n");
+            scanf("%d", seat_number);   
+            if (*seat_number < 0 || *seat_number > 49){
+                printf("Please enter a valid input\n");
+               }
+            if (flights[*destination_choice].seats[*seat_number].reserved==1){
+                printf("That seat is taken. Please enter a different seat number.\n");
+            }
+            } while (*seat_number < 0 || *seat_number > 49 || flights[*destination_choice].seats[*seat_number].reserved == 1);
+            
+        
+            flights[*destination_choice].seats[*seat_number].reserved=1;
+            
+
+            if (*destination_choice == 0) {
+            flights[*destination_choice].seats[*seat_number].ticket_number = 1 + *seat_number;//might need to change this
+            }
+            else if (*destination_choice == 1) {
+            flights[*destination_choice].seats[*seat_number].ticket_number = 51 + *seat_number; //might need to change this
+            }   
+            else if (*destination_choice == 2) {
+            flights[*destination_choice].seats[*seat_number].ticket_number = 101 + *seat_number;//might need to change this
+            }
+            else if (*destination_choice == 3) {
+                flights[*destination_choice].seats[*seat_number].ticket_number = 151 + *seat_number;//might need to change this
+            }
+            else if (*destination_choice == 4) {
+                flights[*destination_choice].seats[*seat_number].ticket_number = 201 + *seat_number;//might need to change this
+            }
+            else if (*destination_choice == 5) {
+                flights[*destination_choice].seats[*seat_number].ticket_number = 251 + *seat_number;//might need to change this
+            }
+
+            
+
+            printf("\nSuccess! Thanks for booking your flight.\n");
+            printf("Your reservation details are below.\n");
+            
+            printf("\nflight %d Seat %d || Ticket Number: %d || Booking Status: %d \n\n", *destination_choice, flights[*destination_choice].seats[*seat_number].seat_number, flights[*destination_choice].seats[*seat_number].ticket_number, flights[*destination_choice].seats[*seat_number].reserved);
+            
+            *counter=*counter+1;
+           
+            break;
+            
+            case 4:
+            
+            printf("Returning to menu\n\n");
+            break;
+        }  
+        
+    
+    
+    } while (book_choice != 4);
+    
+   
+}
+     
+
+void modify_reservation(FLIGHT *flights, int *seat_number, int *flight_of_reservation, int *flightNumber, int *new_seat_selection, int *counter){ 
+    
+int j;
+int i;
+
+
+        
+        
+        printf("\nWe are happy to modify your reservation. Please note that you will not be able to switch flights, only your seat number. Thanks for your understanding\n\n");
+            
+            if (*flightNumber == 3){
+            do{
+            printf("Please enter the flight number of your reservation (Please only the flight #)\n");
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            
+            do {
+            scanf("%d", flight_of_reservation); 
+            if (*flight_of_reservation > 2 || *flight_of_reservation < 0){
+            printf("Please enter a valid input\n");
+            }
+            }while (*flight_of_reservation > 2 || *flight_of_reservation < 0);
+            
+            printf("\nPlease enter the seat on your reservation (0-49)\n");
+            scanf("%d", seat_number);   
+            if (*seat_number < 0 || *seat_number > 49){
+                printf("Please enter a valid input\n");
+               }
+            if (flights[*flight_of_reservation].seats[*seat_number].reserved==1){
+                printf("\nWe have found your reservation\n");
+            }
+            if (flights[*flight_of_reservation].seats[*seat_number].reserved==0){
+                printf("\nThere is no reservation for that flight number and seat number. Please enter new flight and seat numbers.\n");
+            }
+            
+            }while (*seat_number < 0 || *seat_number > 49 || flights[*flight_of_reservation].seats[*seat_number].reserved==0);
+            }
+            
+            
+                      
+            if (*flightNumber == 4){
+                
+            do{
+            printf("Please enter the flight number of your reservation (Please only the flight #\n");
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            
+            do {
+            scanf("%d", flight_of_reservation); 
+            if (*flight_of_reservation > 3 || *flight_of_reservation < 0){
+            printf("Please enter a valid input\n");
+            }
+            }while (*flight_of_reservation > 3 || *flight_of_reservation < 0);
+            
+            printf("\nPlease enter the seat on your reservation (0-49)\n");
+            scanf("%d", seat_number);   
+            if (*seat_number < 0 || *seat_number > 49){
+                printf("Please enter a valid input\n");
+               }
+            if (flights[*flight_of_reservation].seats[*seat_number].reserved==1){
+                printf("\nWe have found your reservation\n");
+            }
+            if (flights[*flight_of_reservation].seats[*seat_number].reserved==0){
+                printf("\nThere is no reservation for that flight number and seat number. Please enter new flight and seat numbers.\n");
+            }
+            
+            }while (*seat_number < 0 || *seat_number > 49 || flights[*flight_of_reservation].seats[*seat_number].reserved==0);
+            }
+            
+            
+            if (*flightNumber==5){
+            do{
+            printf("Please enter the flight number of your reservation (Please only the flight #\n");
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            
+            do {
+            scanf("%d", flight_of_reservation); 
+            if (*flight_of_reservation > 4 || *flight_of_reservation < 0){
+            printf("Please enter a valid input\n");
+            }
+            }while (*flight_of_reservation > 4 || *flight_of_reservation < 0);
+            
+            printf("\nPlease enter the seat on your reservation (0-49)\n");
+            scanf("%d", seat_number);   
+            if (*seat_number < 0 || *seat_number > 49){
+                printf("Please enter a valid input\n");
+               }
+            if (flights[*flight_of_reservation].seats[*seat_number].reserved==1){
+                printf("\nWe have found your reservation\n");
+            }
+            if (flights[*flight_of_reservation].seats[*seat_number].reserved==0){
+                printf("\nThere is no reservation for that flight number and seat number. Please enter new flight and seat numbers.\n");
+            }
+            
+            }while (*seat_number < 0 || *seat_number > 49 || flights[*flight_of_reservation].seats[*seat_number].reserved==0);
+            }
+            
+                    
+            if (*flightNumber==6){
+            
+            do{
+            printf("Please enter the flight number of your reservation (Please only the flight #\n");
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            
+            do {
+            scanf("%d", flight_of_reservation); 
+            if (*flight_of_reservation > 5 || *flight_of_reservation < 0){
+            printf("Please enter a valid input\n");
+            }
+            }while (*flight_of_reservation > 5 || *flight_of_reservation < 0);
+            
+            printf("\nPlease enter the seat on your reservation (0-49)\n");
+            scanf("%d", seat_number);   
+            if (*seat_number < 0 || *seat_number > 49){
+                printf("Please enter a valid input\n");
+               }
+            if (flights[*flight_of_reservation].seats[*seat_number].reserved==1){
+                printf("\nWe have found your reservation\n");
+            }
+            if (flights[*flight_of_reservation].seats[*seat_number].reserved==0){
+                printf("\nThere is no reservation for that flight number and seat number. Please enter new flight and seat numbers.\n");
+            }
+            
+            }while (*seat_number < 0 || *seat_number > 49 || flights[*flight_of_reservation].seats[*seat_number].reserved==0);
+            }
+            
+    
+         
+            
+            do{
+            printf("\nwhat seat would you like to change to?\n");
+            scanf("%d", new_seat_selection);
+            if (*new_seat_selection < 0 || *new_seat_selection >49){
+                printf("please enter a valid input\n");
+            }
+            if (flights[*flight_of_reservation].seats[*new_seat_selection].reserved==1){
+                printf("\nThere is already a reservation for that seat. Please choose another.\n");
+            }
+          
+            
+            }while (*new_seat_selection < 0 || *new_seat_selection > 49 || flights[*flight_of_reservation].seats[*new_seat_selection].reserved==1);
+            
+            flights[*flight_of_reservation].seats[*seat_number].reserved=0;
+            flights[*flight_of_reservation].seats[*new_seat_selection].reserved=1;
+
+            if (*flight_of_reservation == 0) {
+            flights[*flight_of_reservation].seats[*seat_number].ticket_number = 1 + *seat_number;//might need to change this
+            }
+            else if (*flight_of_reservation == 1) {
+            flights[*flight_of_reservation].seats[*seat_number].ticket_number = 51 + *seat_number; //might need to change this
+            }   
+            else if (*flight_of_reservation == 2) {
+            flights[*flight_of_reservation].seats[*seat_number].ticket_number = 101 + *seat_number;//might need to change this
+            }
+            else if (*flight_of_reservation == 3) {
+                flights[*flight_of_reservation].seats[*seat_number].ticket_number = 151 + *seat_number;//might need to change this
+            }
+            else if (*flight_of_reservation == 4) {
+                flights[*flight_of_reservation].seats[*seat_number].ticket_number = 201 + *seat_number;//might need to change this
+            }
+            else if (*flight_of_reservation == 5) {
+                flights[*flight_of_reservation].seats[*seat_number].ticket_number = 251 + *seat_number;//might need to change this
+            }
+
+
+            printf("\nSuccess. Thanks for modifying your seat.\n");
+            
+            printf("Your updated reservation details are below.\n\n");
+            
+            printf("flight %d Seat %d || Ticket Number: %d || Booking Status: %d \n\n", *flight_of_reservation, flights[*flight_of_reservation].seats[*new_seat_selection].seat_number, flights[*flight_of_reservation].seats[*new_seat_selection].ticket_number, flights[*flight_of_reservation].seats[*new_seat_selection].reserved);
+            
+            *counter=*counter;
+        }   
+
+
+
+
+
+void delete_reservation(FLIGHT *flights, int *seat_number, int *flight_to_delete, int *flightNumber, int *counter){
+
+int i;
+            
+           
+            if (*flightNumber==3){
+            do{
+            printf("\nPlease enter the destination on your reservation (Please only enter the flight #)\n"); 
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", flight_to_delete); 
+            if (*flight_to_delete > 2 || *flight_to_delete < 0){
+            printf("Please enter a valid input\n");
+            } 
+            if (flights[*flight_to_delete].seats[50].reserved != 1){
+            printf("There are no reservations on that flight. Please enter a different flight\n");
+            }
+            
+            printf("\nPlease enter the seat on your reservation (0-49)\n");
+            scanf("%d", seat_number);   
+            if (*seat_number < 0 || *seat_number > 49){
+                printf("Please enter a valid input\n");
+            }
+            
+            if (flights[*flight_to_delete].seats[*seat_number].reserved==1){
+            printf("We have found your reservation\n");
+            }
+            if (flights[*flight_to_delete].seats[*seat_number].reserved==0) {
+                printf("There is no reservation for that seat number and flight number. Please enter a new destination and seat number.\n");
+            }
+            } while (*seat_number < 0 || *seat_number > 49 || flights[*flight_to_delete].seats[*seat_number].reserved==0);
+            
+            }
+            
+            if (*flightNumber==4){
+        
+            do{
+            printf("\nPlease enter the destination on your reservation (Please only enter the flight #)\n"); 
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", flight_to_delete); 
+            if (*flight_to_delete > 3 || *flight_to_delete < 0){
+            printf("Please enter a valid input\n");
+            } 
+            if (flights[*flight_to_delete].seats[50].reserved == 0){
+            printf("There are no reservations on that flight. Please enter a different flight\n");
+            }
+            
+            printf("\nPlease enter the seat on your reservation (0-49)\n");
+            scanf("%d", seat_number);   
+            if (*seat_number < 0 || *seat_number > 49){
+                printf("Please enter a valid input\n");
+            }
+            
+            if (flights[*flight_to_delete].seats[*seat_number].reserved==1){
+            printf("We have found your reservation\n");
+            }
+            if (flights[*flight_to_delete].seats[*seat_number].reserved==0) {
+                printf("There is no reservation for that seat number and flight number. Please enter a new destination and seat number.\n");
+            }
+            } while (*seat_number < 0 || *seat_number > 49 || flights[*flight_to_delete].seats[*seat_number].reserved==0);
+            
+            }
+            
+            if (*flightNumber==5){
+                
+            do{
+            printf("\nPlease enter the destination on your reservation (Please only enter the flight #)\n"); 
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", flight_to_delete); 
+            if (*flight_to_delete > 4 || *flight_to_delete < 0){
+            printf("Please enter a valid input\n");
+            } 
+            if (flights[*flight_to_delete].seats[50].reserved == 0){
+            printf("There are no reservations on that flight. Please enter a different flight\n");
+            }
+            
+            printf("\nPlease enter the seat on your reservation (0-49)\n");
+            scanf("%d", seat_number);   
+            if (*seat_number < 0 || *seat_number > 49){
+                printf("Please enter a valid input\n");
+            }
+            
+            if (flights[*flight_to_delete].seats[*seat_number].reserved==1){
+            printf("We have found your reservation\n");
+            }
+            if (flights[*flight_to_delete].seats[*seat_number].reserved==0) {
+                printf("There is no reservation for that seat number and flight number. Please enter a new destination and seat number.\n");
+            }
+            } while (*seat_number < 0 || *seat_number > 49 || flights[*flight_to_delete].seats[*seat_number].reserved==0);
+            
+            }
+            
+            if (*flightNumber==6){
+                
+            do{
+            printf("\nPlease enter the destination on your reservation (Please only enter the flight #)\n"); 
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", flight_to_delete); 
+            if (*flight_to_delete > 5 || *flight_to_delete < 0){
+            printf("Please enter a valid input\n");
+            } 
+            if (flights[*flight_to_delete].seats[50].reserved == 0){
+            printf("There are no reservations on that flight. Please enter a different flight\n");
+            }
+        
+            printf("\nPlease enter the seat on your reservation (0-49)\n");
+            scanf("%d", seat_number);   
+            if (*seat_number < 0 || *seat_number > 49){
+                printf("Please enter a valid input\n");
+            }
+            
+            if (flights[*flight_to_delete].seats[*seat_number].reserved==1){
+            printf("We have found your reservation\n");
+            }
+            if (flights[*flight_to_delete].seats[*seat_number].reserved==0) {
+                printf("There is no reservation for that seat number and flight number. Please enter a new destination and seat number.\n");
+            }
+            } while (*seat_number < 0 || *seat_number > 49 || flights[*flight_to_delete].seats[*seat_number].reserved==0);
+            
+            }
+        
+        
+            
+            flights[*flight_to_delete].seats[*seat_number].reserved=0;
+            
+            
+            if (*flight_to_delete == 0) {
+            flights[*flight_to_delete].seats[*seat_number].ticket_number = 1 + *seat_number;//might need to change this
+            }
+            else if (*flight_to_delete == 1) {
+            flights[*flight_to_delete].seats[*seat_number].ticket_number = 51 + *seat_number; //might need to change this
+            }   
+            else if (*flight_to_delete == 2) {
+            flights[*flight_to_delete].seats[*seat_number].ticket_number = 101 + *seat_number;//might need to change this
+            }
+            else if (*flight_to_delete == 3) {
+                flights[*flight_to_delete].seats[*seat_number].ticket_number = 151 + *seat_number;//might need to change this
+            }
+            else if (*flight_to_delete == 4) {
+                flights[*flight_to_delete].seats[*seat_number].ticket_number = 201 + *seat_number;//might need to change this
+            }
+            else if (*flight_to_delete == 5) {
+                flights[*flight_to_delete].seats[*seat_number].ticket_number = 251 + *seat_number;//might need to change this
+            }
+
+
+            printf("We are sad to see you go. Consider flying with us in the future.\n");
+            printf("We have cancleded your reservation and set the seat as open.\n\n");
+            
+            printf("flight %d Seat %d || Ticket Number: %d || Booking Status: %d \n\n", *flight_to_delete, flights[*flight_to_delete].seats[*seat_number].seat_number, flights[*flight_to_delete].seats[*seat_number].ticket_number, flights[*flight_to_delete].seats[*seat_number].reserved);
+            
+            *counter=*counter-1;
+            
+        }   
+        
+
+void add_destination(FLIGHT *flights, int *newest_destination, int replace_destination, int *flightNumber){
+
+int i;
+int j;
+    
+    do {
+            printf("\nHere is the current flight information.");
+             printf("\nFlight Information:\n");
+                for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d || Pilot ID: %d || Desination %c \n", flights[i].flightNumber, flights[i].plane, flights[i].pilot_id, flights[i].route.destination);
+            }
+            
+            printf("\nPlease enter one of the numbers for the destination you would like to add.\n");
+            printf("(4) Denver\n");
+            printf("(5) Seattle\n");
+            printf("(6) Houston\n");
+            scanf("%d", newest_destination);  
+            if (*newest_destination > 6 || *newest_destination < 4){
+                printf("Please enter a valid input\n");
+                } 
+            } while (*newest_destination < 4 || *newest_destination > 6);
+
+           do{
+            printf("Which of the following destinations would you like to replace\n");
+            printf("Please input the flight number to add the destination - ( 1, 2, 3, ect)\n");
+            for (i = 0; i < *flightNumber; i++) {
+                    printf("flight %d || Destination %c \n", flights[i].flightNumber, flights[i].route.destination);
+             
+            }
+            scanf(" %d", &replace_destination);
+            
+            if (*newest_destination == 4 && flights[replace_destination].route.destination =='E'){
+             printf("that is already the destination for that flight\n");
+            }
+             if (*newest_destination == 5 && flights[replace_destination].route.destination =='F'){
+             printf("that is already the destination for that flight\n");
+            }
+            if (*newest_destination == 6 && flights[replace_destination].route.destination =='G'){
+             printf("that is already the destination for that flight\n");
+            }
+            
+           }while((*newest_destination == 6 && flights[replace_destination].route.destination =='G') || (*newest_destination == 5 && flights[replace_destination].route.destination =='F') || (*newest_destination == 4 && flights[replace_destination].route.destination =='E'));
+
+            
+            if (*newest_destination == 4){
+                flights[replace_destination].route.destination='M';
+                }
+            
+            else if (*newest_destination == 5){
+                flights[replace_destination].route.destination='N';
+                }
+            else if (*newest_destination == 6){
+                flights[replace_destination].route.destination='O';
+                }
+                
+           
+     
+            printf("Flight: %d || Plane: %d || Added Destination: %c\n", flights[replace_destination].flightNumber, flights[replace_destination].plane, flights[replace_destination].route.destination);
+        
+         
+}
+
+void delete_destination(FLIGHT *flights, int *remove_destination, int *flightNumber){
+
+int i;
+int j;
+    
+            if (*flightNumber==3){
+            do{
+            printf("\nplease enter one of the desinations you would like to remove (Please only enter the flight #\n");
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", remove_destination);  
+            if (*remove_destination > 2 || *remove_destination < 0){
+                printf("Please enter a valid input\n");
+                } 
+            if (flights[*remove_destination].route.destination == 0){
+                printf("there is no destination to delete from that flight\n");
+            }
+            
+            } while (*remove_destination < 0 || *remove_destination > 2 || flights[*remove_destination].route.destination == 0);
+            }
+            
+            if (*flightNumber==4){
+            do{
+            printf("\nplease enter one of the desinations you would like to remove (Please only enter the flight #\n");
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", remove_destination);  
+            if (*remove_destination > 3 || *remove_destination < 0){
+                printf("Please enter a valid input\n");
+                } 
+            if (flights[*remove_destination].route.destination == 0){
+                printf("there is no destination to delete from that flight\n");
+            }
+            
+            } while (*remove_destination < 0 || *remove_destination > 3 || flights[*remove_destination].route.destination == 0);
+            }
+            
+            if (*flightNumber==5){
+            do{
+            printf("\nplease enter one of the desinations you would like to remove (Please only enter the flight #\n");
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", remove_destination);  
+            if (*remove_destination > 4 || *remove_destination < 0){
+                printf("Please enter a valid input\n");
+                } 
+            if (flights[*remove_destination].route.destination == 0){
+                printf("there is no destination to delete from that flight\n");
+            }
+            
+            } while (*remove_destination < 0 || *remove_destination > 4 || flights[*remove_destination].route.destination == 0);
+            }
+         
+         
+            if (*flightNumber==6){
+            do{
+            printf("\nplease enter one of the desinations you would like to remove (Please only enter the flight #\n");
+            for (i=0; i <*flightNumber; i++){
+            printf("\nFlight %d: || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", remove_destination);  
+            if (*remove_destination > 5 || *remove_destination < 0){
+                printf("Please enter a valid input\n");
+                } 
+            if (flights[*remove_destination].route.destination == 0){
+            printf("there is no destination to delete from that flight\n");
+            }
+            } while (*remove_destination < 0 || *remove_destination > 5 || flights[*remove_destination].route.destination == 0);
+            }
+            
+         
+            
+            flights[*remove_destination].route.destination = 0;
+            
+        printf("\nSuccess. Thanks for removing that destination.\n");
+            
+            printf("Here is the updated flight information for all flights.\n");
+                for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d || Desination %c \n", flights[i].flightNumber, flights[i].plane, flights[i].route.destination);
+                    
+          
+        }  
+}
+
+
+void add_route(FLIGHT *flights, int *new_route_destination, int *flightNumber){
+
+int i;
+int j;
+
+    
+    if(*flightNumber == 6){
+        
+        printf("\nYou cannot add more flights\n");
+    }
+    
+    else{
+        printf("Here is the current flight information.");
+             printf("\nFlight Information:\n");
+                for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d || Pilot ID: %d || Desination %c \n", flights[i].flightNumber, flights[i].plane, flights[i].pilot_id, flights[i].route.destination);
+                }
+            
+        if (*flightNumber ==3){
+        do{
+        
+            printf("please enter one the destination for the new route you would like to add\n");
+            printf("\n(3) Miami\n");
+            scanf("%d", new_route_destination);  
+            if (*new_route_destination != 3){ 
+                printf("Please enter a valid input\n");
+                } 
+            } while (*new_route_destination!=3);
+        
+        }
+            
+        else if(*flightNumber == 4){
+
+            do{
+            printf("please enter one the destination for the new route you would like to add\n");
+            printf("\n(4) Dallas\n");
+            scanf("%d", new_route_destination);  
+            if (*new_route_destination != 4){ //Need to change this
+                printf("Please enter a valid input\n");
+                } 
+            } while (*new_route_destination!=4);
+        
+       
+        
+        }
+        
+        else if (*flightNumber == 5){
+        do{
+        
+            printf("please enter the destination for the new route you would like to add\n");
+            printf("\n5. San Diego\n");
+            scanf("%d", new_route_destination);  
+            if (*new_route_destination != 5 ){ 
+                printf("Please enter a valid input\n");
+                } 
+            } while (*new_route_destination !=5);
+        
+        }
+  
+        
+    
+            *flightNumber=*flightNumber+1;
+
+    
+            flights[*new_route_destination].flightNumber = *new_route_destination;
+            flights[*new_route_destination].plane = 100 + *new_route_destination;
+            flights[*new_route_destination].pilot_id = 200 + *new_route_destination; //Might need to edit this.
+            flights[*new_route_destination].route.departure = 'S';
+            flights[*new_route_destination].route.destination = 'A' + *new_route_destination;
+           
+            for (i=0;i<50;i++){
+            flights[*new_route_destination].seats[i].reserved=0;
+            flights[*new_route_destination].seats[i].ticket_number = (*new_route_destination*50)+i;
+            flights[*new_route_destination].seats[i].reserved=0;
+        
+            }
+                
+    }
+    
+      printf("Thank you. Here is the route information\n");
+      printf("\nFlight %d || Plane: %d || Departure %c || Desination %c \n", flights[*new_route_destination].flightNumber, flights[*new_route_destination].plane, flights[*new_route_destination].route.departure, flights[*new_route_destination].route.destination);
+                    
+            
+    
+    return;
+
+    }
+      
+
+
+void delete_route(FLIGHT *flights, int *remove_route, int *flightNumber){
+
+int i;
+int j;
+    
+    if (*flightNumber == 3){
+        
+        printf("\nYou cannot remove any more flights\n");
+    }
+    
+    else{
+            
+        if (*flightNumber == 4){
+            do{
+            printf("please enter one of the desinations you would like to remove (Please only enter the flight) #\n");
+            for (i=3; i <*flightNumber; i++){
+            printf("\nFlight Number %d || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", remove_route);
+            if (*remove_route > 3 || *remove_route < 3){ 
+                printf("Please enter a valid input\n");
+                } 
+            } while (*remove_route < 3 || *remove_route > 3);
+        }
+            
+        else if(*flightNumber == 5){
+
+            do{
+            printf("please enter one of the desinations you would like to remove (Please only enter the flight #\n");
+            for (i=4; i <*flightNumber; i++){
+            printf("\nFlight Number %d || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", remove_route);  
+            if (*remove_route > 4 || *remove_route < 4){ //Need to change this
+                printf("Please enter a valid input\n");
+                } 
+            } while (*remove_route < 4 || *remove_route > 4);
+
+        }
+        
+        else if (*flightNumber == 6){
+            do{
+            printf("please enter one of the desinations you would like to remove (Please only enter the flight #\n");
+            for (i=5; i <*flightNumber; i++){
+            printf("\nFlight Number %d || Destination: %c \n", flights[i].flightNumber, flights[i].route.destination);
+            }
+            scanf("%d", remove_route);  
+            if (*remove_route > 5 || *remove_route < 5){ //Need to change this
+                printf("Please enter a valid input\n");
+                } 
+            } while (*remove_route < 5 || *remove_route > 5);
+  
+        }
+    }
+    
+            *flightNumber=*flightNumber-1;
+            
+            //NEED TO FIX THIS.
+            
+            flights[*remove_route].flightNumber = 0;
+            flights[*remove_route].plane = 0;
+            flights[*remove_route].pilot_id = 0; //Might need to edit this.
+            flights[*remove_route].route.departure = 0;
+            flights[*remove_route].route.destination = 0;
+           
+           for (i=0;i<50;i++){
+            flights[*remove_route].seats[i].reserved=0;
+            flights[*remove_route].seats[i].ticket_number =0;
+            flights[*remove_route].seats[i].reserved=0;
+        
+            }
+            
+            printf("The route has been deleted successfully. Here is the updated Flight information\n");
+                for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d || Departure: %c || Desination %c \n", flights[i].flightNumber, flights[i].plane, flights[i].route.departure, flights[i].route.destination);
+                    
+                }
+                
+    }
+
+
+
+void add_plane(FLIGHT *flights, int *new_plane, int *old_plane, int *flightNumber){
+
+int i;
+int j;
+    
+    do {
+       
+            printf("please enter one of the planes you would like to add (please use numbers)\n");
+            printf("(4) 777\n");
+            printf("(5) 737\n");
+            printf("(6) F-17\n");
+            scanf("%d", new_plane);  
+            if (*new_plane > 6 || *new_plane < 4){
+                printf("Please enter a valid input\n");
+                } 
+            } while (*new_plane < 4 || *new_plane > 6);
+
+           do{
+            printf("Which of the following planes would you like to replace\n");
+            printf("Please input the flight number ( 1, 2, 3, ect...)\n");
+                for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d \n", flights[i].flightNumber, flights[i].plane);
+             
+            }
+            
+            scanf(" %d", old_plane);
+            
+            if (*new_plane == 4 && flights[*old_plane].plane == 777){
+             printf("that is already the plane for that flight\n");
+            }
+             if (*new_plane == 5 && flights[*old_plane].plane ==737){
+             printf("that is already the destination for that flight\n");
+            }
+            if (*new_plane == 6 && flights[*old_plane].plane == 17){
+             printf("that is already the destination for that flight\n");
+            }
+            
+           }while((*new_plane == 6 && flights[*old_plane].plane == 17) || (*new_plane == 5 && flights[*old_plane].plane ==737) || (*new_plane == 4 && flights[*old_plane].plane ==777));
+
+            
+            if (*new_plane == 4){
+                flights[*old_plane].plane=777;
+                }
+            
+            else if (*new_plane == 5){
+                flights[*old_plane].plane=737;
+                }
+            else if (*new_plane == 6){
+                flights[*old_plane].plane=17;
+                }
+                
+           
+     
+            printf("Flight Number: %d || Added Plane Number: %d\n", flights[*old_plane].flightNumber, flights[*old_plane].plane);
+        
+         
+}
+    
+ 
+void delete_plane(FLIGHT *flights, int *plane_to_delete, int *flightNumber){
+
+int i;
+int j;
+    
+            if (*flightNumber==3){
+            do{
+            printf("please enter one of the planes you would like to remove (Please only enter the flight #\n");
+             for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d \n", flights[i].flightNumber, flights[i].plane);
+            }
+            scanf("%d", plane_to_delete);  
+            if (*plane_to_delete > 2 || *plane_to_delete < 0){
+                printf("Please enter a valid input\n");
+                } 
+            if (flights[*plane_to_delete].plane == 0){
+                printf("there is no plane to delete for that flight\n");
+            }
+            
+            } while (*plane_to_delete < 0 || *plane_to_delete > 2 || flights[*plane_to_delete].plane == 0);
+            }
+            
+            else if (*flightNumber==4){
+            do{
+            printf("please enter one of the planes you would like to remove (Please only enter the flight #\n");
+             for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d \n", flights[i].flightNumber, flights[i].plane);
+             }
+            scanf("%d", plane_to_delete);  
+            if (*plane_to_delete > 3 || *plane_to_delete < 0){
+                printf("Please enter a valid input\n");
+                } 
+            if (flights[*plane_to_delete].plane == 0){
+                printf("there is no plane to delete for that flight\n");
+            }
+            
+            } while (*plane_to_delete < 0 || *plane_to_delete > 3 || flights[*plane_to_delete].plane == 0);
+            }
+            
+            else if (*flightNumber==5){
+            do{
+            printf("please enter one of the planes you would like to remove (Please only enter the flight #\n");
+             for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d \n", flights[i].flightNumber, flights[i].plane);
+             }
+            scanf("%d", plane_to_delete);  
+            if (*plane_to_delete > 4 || *plane_to_delete < 0){
+                printf("Please enter a valid input\n");
+                } 
+            if (flights[*plane_to_delete].plane == 0){
+                printf("there is no plane to delete for that flight\n");
+            }
+            
+            } while (*plane_to_delete < 0 || *plane_to_delete > 4 || flights[*plane_to_delete].plane == 0);
+            }
+         
+         
+            else if (*flightNumber==6){
+            do{
+            printf("please enter one of the planes you would like to remove (Please only enter the flight #\n");
+             for (i = 0; i < *flightNumber; i++) {
+                    printf("\nFlight %d || Plane: %d \n", flights[i].flightNumber, flights[i].plane);
+             }
+            scanf("%d", plane_to_delete);  
+            if (*plane_to_delete > 5 || *plane_to_delete < 0){
+                printf("Please enter a valid input\n");
+                } 
+            if (flights[*plane_to_delete].plane == 0){
+                printf("there is no plane to delete for that flight\n");
+            }
+            
+            } while (*plane_to_delete < 0 || *plane_to_delete > 5 || flights[*plane_to_delete].plane == 0);
+            }
+            
+         
+            
+            flights[*plane_to_delete].plane = 0;
+            
+            printf("\nThanks for removing that plane. Below is the update information\n");
+            printf("Flight Number %d || Plane %d || Destination %c\n\n", flights[*plane_to_delete].flightNumber, flights[*plane_to_delete].plane, flights[*plane_to_delete].route.destination);
+        
+         
+}
+
+void manage_staff(FLIGHT *flights, int *flightNumber, int *flight_to_edit) {
+    
+    int w=0;
+    int i;
+    
+     printf("\n\nEnter a flight number to change the pilot on schedule \n");
+        
+        for (int i=0; i<*flightNumber; i++) {
+        printf("The current flights are %d || pilot identification  %d\n", flights[i].flightNumber, flights[i].pilot_id);
+        }
+        printf("\n\nPlease use the Flight #\n");
+        scanf("%d", flight_to_edit);
+    
+    for (int c=0; c<*flightNumber; c++) {
+        if (flights[c].flightNumber == *flight_to_edit) {
+            printf("Enter Pilot ID for Flight %d:  \n", flights[*flight_to_edit].flightNumber);
+            scanf("%d", &w);
+            flights[c].pilot_id=w;
+        }
+    }
+}
